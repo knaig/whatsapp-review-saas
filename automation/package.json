@@ -1,0 +1,14 @@
+{
+    "name": "account-automation",
+    "version": "1.0.0",
+    "description": "Automated account creation scripts",
+    "main": "index.js",
+    "scripts": {
+        "start": "node index.js"
+    },
+    "dependencies": {
+        "puppeteer": "^21.5.0",
+        "dotenv": "^16.3.1",
+        "inquirer": "^8.2.6"
+    }
+}
