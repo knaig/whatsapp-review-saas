@@ -3,7 +3,9 @@ const crypto = require('crypto');
 const axios = require('axios');
 const multer = require('multer');
 const { google } = require('googleapis');
-require('dotenv').config();
+// Load .env.local first, then .env (dotenv doesn't do this by default)
+require('dotenv').config({ path: '.env.local' });
+require('dotenv').config(); // This will override with .env if it exists
 
 const app = express();
 const upload = multer({ limits: { fileSize: 10 * 1024 * 1024 } }); // 10MB limit
