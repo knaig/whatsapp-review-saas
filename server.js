@@ -46,24 +46,27 @@ const sendWhatsAppMessage = async (to, templateName, languageCode, components = 
         const phoneId = process.env.WHATSAPP_PHONE_NUMBER_ID;
         const apiUrl = `https://graph.facebook.com/v17.0/${phoneId}/messages`;
 
+        // For now, send simple text message instead of template (templates need approval)
+        // TODO: Replace with approved template once available
+        const messageBody = templateName === 'review_request' 
+            ? `🌟 Thank you for your purchase! We'd love your feedback. Please rate your experience:\n\n⭐ Rate us 1-5 stars by replying with a number.`
+            : `Thank you for your feedback!`;
+
         await axios.post(apiUrl, {
             messaging_product: 'whatsapp',
             to: to,
-            type: 'template',
-            template: {
-                name: templateName,
-                language: { code: languageCode },
-                components: components
-            }
+            type: 'text',
+            text: { body: messageBody }
         }, {
             headers: {
-                'Authorization': `Bearer ${process.env.META_API_TOKEN}`, // Updated env var name
+                'Authorization': `Bearer ${process.env.META_API_TOKEN}`,
                 'Content-Type': 'application/json'
             }
         });
         console.log(`Message sent to ${to}`);
     } catch (error) {
         console.error('Error sending WhatsApp message:', error.response ? error.response.data : error.message);
+        throw error; // Re-throw so webhook can handle it
     }
 };
 
